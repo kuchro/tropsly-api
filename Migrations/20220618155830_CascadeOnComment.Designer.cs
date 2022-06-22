@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using tropsly_api.Data;
@@ -12,9 +13,10 @@ using tropsly_api.Data;
 namespace tropsly_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220618155830_CascadeOnComment")]
+    partial class CascadeOnComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,6 +24,46 @@ namespace tropsly_api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("tropsly_api.Model.Brand", b =>
+                {
+                    b.Property<int>("BrandId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BrandId"));
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("BrandId");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("tropsly_api.Model.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Category");
+                });
 
             modelBuilder.Entity("tropsly_api.Model.CommentSection", b =>
                 {
@@ -46,174 +88,6 @@ namespace tropsly_api.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("comment_section", (string)null);
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.Brand", b =>
-                {
-                    b.Property<int>("BrandId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BrandId"));
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("BrandId");
-
-                    b.ToTable("Brands");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.DeliveryOption", b =>
-                {
-                    b.Property<int>("DeliveryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeliveryId"));
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeliveryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("DeliveryPrice")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("ExtraOptions")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("DeliveryId");
-
-                    b.ToTable("DeliveryOptions");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.ProductOrder", b =>
-                {
-                    b.Property<int>("ProductOrderId")
-                        .HasColumnType("integer")
-                        .HasColumnName("product_order_id");
-
-                    b.Property<int>("DeliveryOptionId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("ProductOrderId");
-
-                    b.ToTable("Product_Orders", (string)null);
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.CustomerAddress", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CustomerPersonalDataId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FlatNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HouseNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Region")
-                        .HasColumnType("text");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("AddressId");
-
-                    b.ToTable("CustomerAddress");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.CustomerPersonalData", b =>
-                {
-                    b.Property<int>("CustomerPersonalDataId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("customer_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CustomerPersonalDataId"));
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("LastName")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductOrderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CustomerPersonalDataId");
-
-                    b.HasIndex("ProductOrderId")
-                        .IsUnique();
-
-                    b.ToTable("customer_personal", (string)null);
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.ProductProductOrder", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductOrderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ProductId", "ProductOrderId");
-
-                    b.HasIndex("ProductOrderId");
-
-                    b.ToTable("ProductProductOrder");
                 });
 
             modelBuilder.Entity("tropsly_api.Model.Product", b =>
@@ -413,72 +287,20 @@ namespace tropsly_api.Migrations
                     b.HasOne("tropsly_api.Model.Product", "Product")
                         .WithMany("CommentSections")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.ProductOrder", b =>
-                {
-                    b.HasOne("tropsly_api.Model.ConfigData.DeliveryOption", "DeliveryOption")
-                        .WithMany("ProductOrders")
-                        .HasForeignKey("ProductOrderId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.Navigation("DeliveryOption");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.CustomerAddress", b =>
-                {
-                    b.HasOne("tropsly_api.Model.OrderData.CustomerPersonalData", "CustomerPersonalData")
-                        .WithOne("CustomerAddress")
-                        .HasForeignKey("tropsly_api.Model.OrderData.CustomerAddress", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerPersonalData");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.CustomerPersonalData", b =>
-                {
-                    b.HasOne("tropsly_api.Model.ConfigData.ProductOrder", "ProductOrder")
-                        .WithOne("CustomerPersonalData")
-                        .HasForeignKey("tropsly_api.Model.OrderData.CustomerPersonalData", "ProductOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductOrder");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.ProductProductOrder", b =>
-                {
-                    b.HasOne("tropsly_api.Model.Product", "Product")
-                        .WithMany("ProductProductOrders")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("tropsly_api.Model.ConfigData.ProductOrder", "ProductOrder")
-                        .WithMany("ProductProductOrders")
-                        .HasForeignKey("ProductOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("ProductOrder");
                 });
 
             modelBuilder.Entity("tropsly_api.Model.Product", b =>
                 {
-                    b.HasOne("tropsly_api.Model.ConfigData.Brand", "Brand")
+                    b.HasOne("tropsly_api.Model.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("tropsly_api.Model.ConfigData.Category", "Category")
+                    b.HasOne("tropsly_api.Model.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -529,39 +351,19 @@ namespace tropsly_api.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.Brand", b =>
+            modelBuilder.Entity("tropsly_api.Model.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.Category", b =>
+            modelBuilder.Entity("tropsly_api.Model.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.DeliveryOption", b =>
-                {
-                    b.Navigation("ProductOrders");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.ConfigData.ProductOrder", b =>
-                {
-                    b.Navigation("CustomerPersonalData")
-                        .IsRequired();
-
-                    b.Navigation("ProductProductOrders");
-                });
-
-            modelBuilder.Entity("tropsly_api.Model.OrderData.CustomerPersonalData", b =>
-                {
-                    b.Navigation("CustomerAddress");
                 });
 
             modelBuilder.Entity("tropsly_api.Model.Product", b =>
                 {
                     b.Navigation("CommentSections");
-
-                    b.Navigation("ProductProductOrders");
 
                     b.Navigation("RatingDatas");
                 });

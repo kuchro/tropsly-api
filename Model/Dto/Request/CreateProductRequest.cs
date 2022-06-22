@@ -9,6 +9,7 @@
         public int Quantity { get; set; }
         public string? Category { get; set; }
         public string Material { get; set; }
+        public int UserId { get; set; }
         public string? Brand { get; set; }
         public List<string> Size { get; set; }
 

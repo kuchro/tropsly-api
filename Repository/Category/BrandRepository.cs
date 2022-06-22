@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tropsly_api.Data;
-using tropsly_api.Model;
+using tropsly_api.Model.ConfigData;
 
 namespace tropsly_api.Repository
 {
@@ -57,10 +57,10 @@ namespace tropsly_api.Repository
 
         public async Task Update(Brand brand)
         {
-            var brandToUpdate = await _context.Brands.FindAsync(brand.Id);
+            var brandToUpdate = await _context.Brands.FindAsync(brand.BrandId);
             if (brandToUpdate == null)
             {
-                throw new NullReferenceException($"Product with `{brand.Id}` does not exist.");
+                throw new NullReferenceException($"Product with `{brand.BrandId}` does not exist.");
             }
             brandToUpdate.Name = brand.Name;
          

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tropsly_api.Data;
-using tropsly_api.Model;
+using tropsly_api.Model.ConfigData;
 
 namespace tropsly_api.Repository
 {
@@ -13,7 +13,7 @@ namespace tropsly_api.Repository
             _context = context;
         }
 
-        public async Task AddCollection(IList<Category> category)
+        public async Task AddCollection(IList<Model.ConfigData.Category> category)
         {
             _context.Category.AddRange(category);
             await _context.SaveChangeAsync();
@@ -43,26 +43,26 @@ namespace tropsly_api.Repository
             await _context.SaveChangeAsync();
         }
 
-        public async Task DeleteCollection(IList<Category> categories)
+        public async Task DeleteCollection(IList<Model.ConfigData.Category> categories)
         {
             _context.Category.RemoveRange(categories);
             await _context.SaveChangeAsync();
         }
 
 
-        public async Task<Category> Get(int id) => await _context.Category.FindAsync(id);
-        public async Task<Category> GetByName(string name) =>
+        public async Task<Model.ConfigData.Category> Get(int id) => await _context.Category.FindAsync(id);
+        public async Task<Model.ConfigData.Category> GetByName(string name) =>
           await _context.Category.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
-        public async Task<IEnumerable<Category>> GetAll() => await _context.Category.ToListAsync();
+        public async Task<IEnumerable<Model.ConfigData.Category>> GetAll() => await _context.Category.ToListAsync();
 
 
 
-        public async Task Update(Category category)
+        public async Task Update(Model.ConfigData.Category category)
         {
-            var CategoryToUpdate = await _context.Category.FindAsync(category.Id);
+            var CategoryToUpdate = await _context.Category.FindAsync(category.CategoryId);
             if (CategoryToUpdate == null)
             {
-                throw new NullReferenceException($"Product with `{category.Id}` does not exist.");
+                throw new NullReferenceException($"Product with `{category.CategoryId}` does not exist.");
             }
             CategoryToUpdate.Name = category.Name;
 

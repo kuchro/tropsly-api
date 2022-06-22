@@ -1,4 +1,6 @@
-﻿namespace tropsly_api.Model.UserAccess
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace tropsly_api.Model.UserAccess
 {
     public class Role
     {
@@ -6,8 +8,8 @@
         {
             Users = new HashSet<User>();
         }
-
-        public short RoleId { get; set; }
+        [Key]
+        public int RoleId { get; set; }
         public string RoleDesc { get; set; }
 
         public virtual ICollection<User> Users { get; set; }

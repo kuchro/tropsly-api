@@ -22,7 +22,28 @@ services:
       - "5050:80"
     volumes:
         - pgadmin:/root/.pgadmin
+  localstack:
+        container_name: localstack-container
+        image: localstack/localstack
+        network_mode: bridge
+        ports:
+          - "53:53"
+          - "443:443"
+          - "4566:4566"
+          - "4571:4571"
+        environment:
+          - SERVICES=s3, lambda
+          - DEBUG=1
+          - DATA_DIR=/tmp/localstack/data # Local directory for saving persistent data
+          - DEFAULT_REGION=eu-west-2
+          - LAMBDA_EXECUTOR=local #running lambda from local dir
+          - LAMBDA_REMOTE_DOCKER=0
+          - DOCKER_HOST=unix:///var/run/docker.sock
+          - HOST_TMP_FOLDER=/tmp/localstack
+        volumes:
+          - "/var/run/docker.sock:/var/run/docker.sock"
 volumes:
   db:
     driver: local
   pgadmin:
+  localstack:

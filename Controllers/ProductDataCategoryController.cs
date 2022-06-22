@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using tropsly_api.Model;
+using tropsly_api.Model.ConfigData;
 using tropsly_api.Model.Dto;
 using tropsly_api.Model.Dto.Request;
 using tropsly_api.Model.Dto.Response;
 using tropsly_api.Repository;
+using tropsly_api.Repository.Category;
 
 namespace tropsly_api.Controllers
 {
@@ -13,10 +14,12 @@ namespace tropsly_api.Controllers
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandRepository _brandRepository;
-        public ProductDataCategoryController(ICategoryRepository categoryRepository, IBrandRepository brandRepository )
+        private readonly IDeliveryOptionRepository _deliveryOption;
+        public ProductDataCategoryController(ICategoryRepository categoryRepository, IBrandRepository brandRepository, IDeliveryOptionRepository deliveryOptionRepository )
         {
             _categoryRepository=categoryRepository;
             _brandRepository=brandRepository;
+            _deliveryOption=deliveryOptionRepository;
         }
 
         [HttpGet("category")]
@@ -113,6 +116,29 @@ namespace tropsly_api.Controllers
             return Ok(arr);
         }
 
+
+        [HttpPost]
+        [Route("delivery")]
+        public async Task<ActionResult> CreateDelivery(DeliveryOptionRequest deliveryOption)
+        {
+            var data = new DeliveryOption
+            {
+                DeliveryName = deliveryOption.DeliveryName,
+                DeliveryPrice = deliveryOption.DeliveryPrice,
+                ExtraOptions = deliveryOption.ExtraOptions,
+                CreatedDateTime = DateTime.Now
+            };
+            await _deliveryOption.Add(data);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("delivery")]
+        public async Task<ActionResult<IEnumerable<DeliveryOptionsResponse>>> GetAllDeliveryOptions()
+        {
+            var deliveryOptions = await _deliveryOption.GetAll();
+            return Ok(deliveryOptions.Select(x => DataMapper.ToResponse(x)));
+        }
 
     }
 }

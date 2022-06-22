@@ -13,12 +13,14 @@ namespace tropsly_api.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandRepository _brandRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository)
+        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository, IUserRepository userRepository)
         {
-            _productRepository=productRepository;
-            _categoryRepository=categoryRepository;
-            _brandRepository=brandRepository;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet("{id}")]
@@ -40,7 +42,7 @@ namespace tropsly_api.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory([FromRoute] int id)
         {
             var products = await _productRepository.GetAll();
-            return Ok(products.Where(product => product.CategoryId==id));
+            return Ok(products.Where(product => product.CategoryId == id));
         }
 
         [HttpPost]
@@ -48,8 +50,9 @@ namespace tropsly_api.Controllers
         {
             var cat = await _categoryRepository.GetByName(productRequest.Category);
             var brand = await _brandRepository.GetByName(productRequest.Brand);
+          //  var userData = await _userRepository.GetById(productRequest.UserId);
 
-            if (cat != null&& brand != null)
+            if (cat != null && brand != null)
             {
                 var product = new Product
                 {
@@ -61,41 +64,34 @@ namespace tropsly_api.Controllers
                     Category = cat,
                     Quantity = productRequest.Quantity,
                     Material = productRequest.Material,
+                   // CreatedByUserId = productRequest.UserId,
                     Brand = brand,
                     Size = productRequest.Size
                 };
                 await _productRepository.Add(product);
                 return Ok();
             }
-            
+
             return BadRequest();
         }
 
         [HttpPut("{id:int}")]
         public async Task UpdateProduct(int id, UpdateProductRequest productRequest)
         {
-            //var productData = await _productRepository.Get(id);
 
             try
             {
-               
+                await _productRepository.Update(id, productRequest);
+            }
+            catch (Exception)
+            {
 
-
-
-               await _productRepository.Update(id,productRequest);
-                    
-                }
-                catch (Exception)
-                {
-                   
-                }
+            }
         }
-
-        
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
-        {   
+        {
             await _productRepository.Delete(id);
             return Ok();
         }

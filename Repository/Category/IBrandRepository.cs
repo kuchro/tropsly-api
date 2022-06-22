@@ -1,4 +1,4 @@
-﻿using tropsly_api.Model;
+﻿using tropsly_api.Model.ConfigData;
 
 namespace tropsly_api.Repository
 {
