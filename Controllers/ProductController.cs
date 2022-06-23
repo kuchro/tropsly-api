@@ -79,7 +79,6 @@ namespace tropsly_api.Controllers
         [HttpPut("{id:int}")]
         public async Task UpdateProduct(int id, UpdateProductRequest productRequest)
         {
-
             try
             {
                 await _productRepository.Update(id, productRequest);

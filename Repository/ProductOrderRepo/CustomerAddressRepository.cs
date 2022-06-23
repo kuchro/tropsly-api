@@ -24,7 +24,7 @@ namespace tropsly_api.Repository.ProductOrderRepo
             await _dataContext.SaveChangeAsync();
         }
 
-        public async Task<CustomerAddress> Get(int id) => await _dataContext.CustomerAddresses.FindAsync(id);
+        public async Task<CustomerAddress> GetByCustomerId(int id) => await _dataContext.CustomerAddresses.FirstOrDefaultAsync(x=>x.CustomerId==id);
 
 
         public async Task<IEnumerable<CustomerAddress>> Get()

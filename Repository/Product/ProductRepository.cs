@@ -28,7 +28,6 @@ namespace tropsly_api.Repository
             _context.Products.Remove(product);
            await  _context.SaveChangeAsync();
 
-
         }
 
         public async Task<Product> Get(int id) => await _context.Products.FindAsync(id);

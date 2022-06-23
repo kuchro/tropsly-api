@@ -24,11 +24,20 @@ namespace tropsly_api.Repository.ProductOrderRepo
             await _dataContext.SaveChangeAsync();
         }
 
-        public async Task<Order> Get(int id) => await _dataContext.Orders.FindAsync(id);
+        public async Task<Order> Get(int id) => await _dataContext.Orders
+            .Include(c => c.CustomerPersonalData)
+            .ThenInclude(customerData => customerData.CustomerAddress)
+            .Include(p => p.OrderedProducts)
+            .Include(d=>d.DeliveryOption)
+            .FirstOrDefaultAsync(x=>x.ProductOrderId==id);
 
 
         public async Task<IEnumerable<Order>> Get()
-        => await _dataContext.Orders.ToListAsync();
+        => await _dataContext.Orders.Include(c=>c.CustomerPersonalData)
+            .ThenInclude(customerData => customerData.CustomerAddress)
+            .Include(p=>p.OrderedProducts)
+            .Include(d=>d.DeliveryOption)
+            .ToListAsync();
 
         public Task Update(Order productOrder)
         {

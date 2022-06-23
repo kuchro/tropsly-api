@@ -113,12 +113,25 @@ namespace tropsly_api.Data
             modelBuilder.Entity<CustomerPersonalData>(entity =>
             {
                 entity.ToTable("customer_personal");
-                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
                 entity.HasOne(c => c.CustomerAddress)
                 .WithOne(p => p.CustomerPersonalData)
-                .HasForeignKey<CustomerAddress>(c => c.AddressId);
+                .HasForeignKey<CustomerAddress>(c => c.CustomerId);
 
             });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("order");
+                entity.HasOne(p => p.DeliveryOption)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(p => p.DeliveryOptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+
+            //modelBuilder.Entity<CustomerAddress>().ToTable("customer_personal");
+
+
 
 
 

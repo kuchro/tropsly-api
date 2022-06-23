@@ -15,6 +15,17 @@ namespace tropsly_api.Model.Dto
                 FlatNumber= addressData.FlatNumber,
                 HouseNumber = addressData.HouseNumber};
 
+        public static CustomerAddressData ToCustomerAddressDto(CustomerAddress addressData)
+           => new CustomerAddressData
+           {
+               StreetName = addressData.StreetName,
+               City = addressData.City,
+               Region = addressData.Region,
+               ZipCode = addressData.ZipCode,
+               FlatNumber = addressData.FlatNumber,
+               HouseNumber = addressData.HouseNumber
+           };
+
         public static CustomerPersonalData ToCustomerInfo(CustomerDataInfo customerDataInfo, CustomerAddress customerAddress , int orderId)
             => new CustomerPersonalData
             {
@@ -33,6 +44,7 @@ namespace tropsly_api.Model.Dto
                LastName = customerDataInfo.LastName,
                EmailAddress = customerDataInfo.EmailAddress,
                PhoneNumber = customerDataInfo.PhoneNumber,
+               CustomerAddressData = ToCustomerAddressDto(customerDataInfo.CustomerAddress)
            };
 
         public static OrderedProduct ToOrderedProduct(OrderedProductRequest orderedProductRequest)
@@ -41,7 +53,8 @@ namespace tropsly_api.Model.Dto
                 Name = orderedProductRequest.Name,
                 Price = orderedProductRequest.Price,
                 SerialNumber = orderedProductRequest.SerialNumber,
-                Quantity = orderedProductRequest.Quantity
+                Quantity = orderedProductRequest.Quantity,
+                Size = orderedProductRequest.Size,
             };
 
         public static ProductInfo ToProductInfo(OrderedProduct orderedProduct)
