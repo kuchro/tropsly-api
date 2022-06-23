@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace tropsly_api.Model.ConfigData
 {
-    public class ProductOrder
+    public class Order
     {
-        public ProductOrder()
+        public Order()
         {
-            ProductProductOrders = new List<ProductProductOrder>();
+            OrderedProducts = new List<OrderedProduct>();
         }
         [Key]
         public int ProductOrderId { get; set; }
@@ -15,7 +15,7 @@ namespace tropsly_api.Model.ConfigData
         public int DeliveryOptionId { get; set; }
         public virtual DeliveryOption? DeliveryOption { get; set; }
         public virtual CustomerPersonalData CustomerPersonalData { get; set; }
-        public virtual ICollection<ProductProductOrder> ProductProductOrders { get; set; }
-        
+        public virtual ICollection<OrderedProduct> OrderedProducts { get; set; }
+
     }
 }

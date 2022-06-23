@@ -6,7 +6,7 @@ namespace tropsly_api.Model.ConfigData
     {
         public DeliveryOption()
         {
-            ProductOrders = new List<ProductOrder>();
+            ProductOrders = new List<Order>();
         }
         [Key]
         public int DeliveryId { get; set; }
@@ -15,6 +15,6 @@ namespace tropsly_api.Model.ConfigData
         public DateTime CreatedDateTime { get; set; }
         public string ExtraOptions { get; set; }
 
-        public virtual ICollection<ProductOrder> ProductOrders { get; set; }
+        public virtual ICollection<Order> ProductOrders { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using tropsly_api.Model;
 using tropsly_api.Repository.Category;
+using tropsly_api.Repository.ProductOrderRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,14 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 
 
 builder.Services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
-//builder.Services.AddTransient(typeof(ICrudDataContext<Product>), typeof(CrudDataContext<Product>)); ;
+//builder.Services.AddTransient(typeof(ICrudDataContext<>), typeof(CrudDataContext<>)); ;
 //builder.Services.AddTransient(typeof(ICrudRepository<>), typeof(CrudRepository<>)); ;
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
+builder.Services.AddScoped<ICustomerPersonalDataRepository, CustomerPersonalDataRepository>();
+builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
+
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IDeliveryOptionRepository, DeliveryOptionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

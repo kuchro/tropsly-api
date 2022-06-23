@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tropsly_api.Model.OrderData
 {
@@ -13,7 +14,7 @@ namespace tropsly_api.Model.OrderData
         public string ZipCode { get; set; }
         public string? Region { get; set; }
 
-        public int CustomerPersonalDataId { get; set; }
-        public virtual CustomerPersonalData? CustomerPersonalData { get; set; }
+        public int CustomerId { get; set; }
+        public virtual CustomerPersonalData CustomerPersonalData { get; set; }
     }
 }

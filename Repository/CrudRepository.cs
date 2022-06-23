@@ -12,7 +12,14 @@ namespace tropsly_api.Repository
         {
             _context = context;
         }
-        public T Create(T entity)
+        public async Task<T> Create(T entity)
+        {
+            _context.Set<T>().Add(entity);
+           await _context.SaveChangeAsync();
+           return entity;
+        }
+
+        public Task Delete(T t)
         {
             throw new NotImplementedException();
         }
@@ -28,6 +35,11 @@ namespace tropsly_api.Repository
         {
             var entities = await _context.Set<T>().ToListAsync();
             return entities; 
+        }
+
+        public Task<T> Update(T entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

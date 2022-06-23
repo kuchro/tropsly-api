@@ -12,7 +12,6 @@ namespace tropsly_api.Model
             Size= new List<string>();
             CommentSections = new List<CommentSection>();
             RatingDatas = new List<RatingData>();
-            ProductProductOrders = new List<ProductProductOrder>();
         }
         [Key]
         public int ProductId { get; set; }
@@ -30,7 +29,6 @@ namespace tropsly_api.Model
         public List<string> Size { get; set; }
         public virtual ICollection<RatingData>? RatingDatas { get; set; }
         public virtual ICollection<CommentSection>? CommentSections { get; set; }
-        public virtual ICollection<ProductProductOrder> ProductProductOrders { get; set; }
         // public int CreatedByUserId { get; set; }
         //public virtual User? User { get; set; }
     }

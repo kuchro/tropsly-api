@@ -19,6 +19,13 @@ namespace tropsly_api.Data
         public DbSet<CommentSection> CommentSections { get; set; }
         public DbSet<DeliveryOption> DeliveryOptions { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderedProduct> OrderedProducts { get; set; }
+
+        public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -94,25 +101,19 @@ namespace tropsly_api.Data
                  .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<ProductOrder>(entity =>
+            modelBuilder.Entity<OrderedProduct>(entity =>
             {
-                entity.ToTable("Product_Orders");
-                entity.Property(e => e.ProductOrderId).HasColumnName("product_order_id");
-
-                entity.HasOne(d => d.DeliveryOption)
-                .WithMany(p => p.ProductOrders)
-                .HasForeignKey(d => d.ProductOrderId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-                entity.HasOne(c => c.CustomerPersonalData)
-                .WithOne(p => p.ProductOrder)
-                .HasForeignKey<CustomerPersonalData>(c => c.ProductOrderId);
+                entity.ToTable("ordered_products");
+                entity.HasOne(p => p.Order)
+                .WithMany(c => c.OrderedProducts)
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<CustomerPersonalData>(entity =>
             {
                 entity.ToTable("customer_personal");
-                entity.Property(e => e.CustomerPersonalDataId).HasColumnName("customer_id");
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
                 entity.HasOne(c => c.CustomerAddress)
                 .WithOne(p => p.CustomerPersonalData)
                 .HasForeignKey<CustomerAddress>(c => c.AddressId);
@@ -120,23 +121,11 @@ namespace tropsly_api.Data
             });
 
 
-                modelBuilder.Entity<ProductProductOrder>(entity =>
-            {
-                modelBuilder.Entity<ProductProductOrder>()
-                    .HasKey(pp => new { pp.ProductId, pp.ProductOrderId });
-                modelBuilder.Entity<ProductProductOrder>()
-                    .HasOne(p => p.Product)
-                    .WithMany(x => x.ProductProductOrders)
-                    .HasForeignKey(pp => pp.ProductId);
-                modelBuilder.Entity<ProductProductOrder>()
-                    .HasOne(bc => bc.ProductOrder)
-                    .WithMany(c => c.ProductProductOrders)
-                    .HasForeignKey(bc => bc.ProductOrderId);
-            });
+
 
 
         }
 
-        public Task<int> SaveChangeAsync(CancellationToken cancellationToken) => base.SaveChangesAsync(cancellationToken);
+        public Task<int> SaveChangeAsync(CancellationToken cancellationToken = new CancellationToken()) => base.SaveChangesAsync(cancellationToken);
     }
 }

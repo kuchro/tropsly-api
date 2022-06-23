@@ -36,21 +36,12 @@ namespace tropsly_api.Controllers
             return Ok(products);
         }
 
-
-        [HttpGet]
-        [Route("category/{id:int}")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory([FromRoute] int id)
-        {
-            var products = await _productRepository.GetAll();
-            return Ok(products.Where(product => product.CategoryId == id));
-        }
-
         [HttpPost]
         public async Task<ActionResult> CreateProduct(CreateProductRequest productRequest)
         {
             var cat = await _categoryRepository.GetByName(productRequest.Category);
             var brand = await _brandRepository.GetByName(productRequest.Brand);
-          //  var userData = await _userRepository.GetById(productRequest.UserId);
+            //  var userData = await _userRepository.GetById(productRequest.UserId);
 
             if (cat != null && brand != null)
             {
@@ -64,7 +55,7 @@ namespace tropsly_api.Controllers
                     Category = cat,
                     Quantity = productRequest.Quantity,
                     Material = productRequest.Material,
-                   // CreatedByUserId = productRequest.UserId,
+                    // CreatedByUserId = productRequest.UserId,
                     Brand = brand,
                     Size = productRequest.Size
                 };
@@ -74,6 +65,16 @@ namespace tropsly_api.Controllers
 
             return BadRequest();
         }
+
+        [HttpGet]
+        [Route("category/{id:int}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory([FromRoute] int id)
+        {
+            var products = await _productRepository.GetAll();
+            return Ok(products.Where(product => product.CategoryId == id));
+        }
+
+        
 
         [HttpPut("{id:int}")]
         public async Task UpdateProduct(int id, UpdateProductRequest productRequest)
