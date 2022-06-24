@@ -140,5 +140,20 @@ namespace tropsly_api.Controllers
             return Ok(deliveryOptions.Select(x => DataMapper.ToResponse(x)));
         }
 
+
+        [HttpDelete("delivery/{id}")]
+        public async Task<ActionResult> DeleteDeliveryOption(int id)
+        {
+            await _deliveryOption.Delete(id);
+            return Ok();
+        }
+
+
+        [HttpPut("delivery")]
+        public async Task UpdateProduct(DeliveryOption newData)
+        {
+           await _deliveryOption.Update(newData);
+        }
+
     }
 }

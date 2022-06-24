@@ -16,7 +16,7 @@ namespace tropsly_api.Model.Dto
             => new CommentResponse { CommentId=comment.CommentId, Comment=comment.Comment,DateTime=comment.CreatedDate,ProductId=comment.ProductId};
 
         public static DeliveryOptionsResponse ToResponse(DeliveryOption delivery)
-          => new DeliveryOptionsResponse { DeliveryName= delivery.DeliveryName, DeliveryPrice=delivery.DeliveryPrice, ExtraOptions=delivery.ExtraOptions};
+          => new DeliveryOptionsResponse {DeliveryId=delivery.DeliveryId, DeliveryName= delivery.DeliveryName, DeliveryPrice=delivery.DeliveryPrice, ExtraOptions=delivery.ExtraOptions};
         public static RatingData ToModel(RateProductRequest rateProductRequest) =>
             new RatingData { ProductId = rateProductRequest.ProductId, RatingScore = rateProductRequest.RatingScore};
     }
