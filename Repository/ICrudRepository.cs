@@ -5,7 +5,9 @@
         Task<T> Get(int id);
         Task<IEnumerable<T>> Get();
         Task<T> Create(T entity);
+        Task AddCollection(IList<T> dataList);
         Task<T> Update(T entity);
-        Task Delete(T t);
+        Task Delete(int id);
+        Task DeleteCollection(IList<T> names);
     }
 }

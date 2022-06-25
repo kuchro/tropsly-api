@@ -11,6 +11,7 @@ namespace tropsly_api.Model.ConfigData
         }
         [Key]
         public int ProductOrderId { get; set; }
+        public string OrderNumber { get; set; }
         public decimal TotalPrice { get; set; }
         public string Status { get; set; }
         public int DeliveryOptionId { get; set; }

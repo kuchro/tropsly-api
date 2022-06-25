@@ -11,11 +11,11 @@ namespace tropsly_api.Repository.ProductOrderRepo
         {
             this._dataContext = dataContext;
         }
-        public async Task<int> Add(Order productOrder)
+        public async Task<Order> Add(Order productOrder)
         {
             _dataContext.Orders.Add(productOrder);
            await _dataContext.SaveChangeAsync();
-            return productOrder.ProductOrderId;
+            return productOrder;
         }
 
         public async Task Delete(Order productOrder)
@@ -39,9 +39,9 @@ namespace tropsly_api.Repository.ProductOrderRepo
             .Include(d=>d.DeliveryOption)
             .ToListAsync();
 
-        public Task Update(Order productOrder)
+        public async Task Update(Order productOrder)
         {
-            throw new NotImplementedException();
+            await _dataContext.SaveChangeAsync();
         }
     }
 }

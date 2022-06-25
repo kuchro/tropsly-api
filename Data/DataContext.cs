@@ -25,6 +25,8 @@ namespace tropsly_api.Data
         public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
 
+        public DbSet<MaterialType> MaterialTypes { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -49,6 +51,16 @@ namespace tropsly_api.Data
                 entity.HasOne(b => b.Brand)
                 .WithMany(i => i.Products)
                 .HasForeignKey(i => i.BrandId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(b => b.MaterialType)
+               .WithMany(i => i.Products)
+               .HasForeignKey(i => i.MaterialTypeId)
+               .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(b => b.ProductType)
+                .WithMany(i => i.Products)
+                .HasForeignKey(i => i.ProductTypeId)
                 .OnDelete(DeleteBehavior.SetNull);
 
                 /* entity.HasOne(u => u.User)

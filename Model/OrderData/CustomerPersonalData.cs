@@ -8,7 +8,7 @@ namespace tropsly_api.Model.OrderData
         [Key]
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
-        public int LastName { get; set; }
+        public string LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public virtual CustomerAddress? CustomerAddress { get; set; }

@@ -44,12 +44,9 @@ namespace tropsly_api.Repository
                 productData.Description = productRequest.Description;
                 productData.Price = productRequest.Price;
                 productData.Image = productRequest.Image;
-              
-              
+                productData.SerialNumber = productRequest.SerialNumber;
                 productData.Quantity = productRequest.Quantity;
-                productData.Material = productRequest.Material;
-
-            productData.Size = productRequest.Size;
+                productData.Size = productRequest.Size;
             
              // _context.Products.Update(productData);
              await _context.SaveChangeAsync();

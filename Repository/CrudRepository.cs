@@ -19,9 +19,23 @@ namespace tropsly_api.Repository
            return entity;
         }
 
-        public Task Delete(T t)
+        public async Task AddCollection(IList<T> dataList)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().AddRange(dataList);
+            await _context.SaveChangeAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var entity = await _context.Set<T>().FindAsync(id);
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteCollection(IList<T> data)
+        {
+            _context.Set<T>().RemoveRange(data);
+            await _context.SaveChangeAsync();
         }
 
         public async Task<T> Get(int id)

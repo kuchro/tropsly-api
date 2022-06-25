@@ -23,9 +23,13 @@ namespace tropsly_api.Model
         public int Quantity { get; set; }
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; } 
-        public string Material { get; set; }
+        public string SerialNumber { get; set; }
         public int? BrandId { get; set; }
         public virtual Brand? Brand { get; set; }
+        public int MaterialTypeId { get; set; }
+        public virtual MaterialType MaterialType { get; set; }
+        public int ProductTypeId { get; set; }
+        public virtual ProductType ProductType { get; set; }
         public List<string> Size { get; set; }
         public virtual ICollection<RatingData>? RatingDatas { get; set; }
         public virtual ICollection<CommentSection>? CommentSections { get; set; }

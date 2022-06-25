@@ -57,16 +57,36 @@ namespace tropsly_api.Controllers
             var productOrder = new Order()
             {
                 TotalPrice = createOrderRequest.TotalPrice,
-                Status = createOrderRequest.Status,
+                OrderNumber = createOrderRequest.OrderNumber,
+                Status = "TO_DO",
                 CustomerPersonalData = customerInfoData,
                 DeliveryOptionId = createOrderRequest.DeliveryId,
                 OrderedProducts = orderedProduct,
 
             };
             var orderId = await _orderRepository.Add(productOrder);
+            
 
             return Ok();
            
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDeliveryOption(int id)
+        {
+            var order = await _orderRepository.Get(id);
+            await _orderRepository.Delete(order);
+            return Ok();
+        }
+
+
+        [HttpPut]
+        public async Task UpdateProduct(OrderUpdateRequest newData)
+        {
+            var order = await _orderRepository.Get(newData.Id);
+            order.Status = newData.Status;
+            await _orderRepository.Update(order);
         }
 
 

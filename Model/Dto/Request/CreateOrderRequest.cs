@@ -4,7 +4,7 @@
     {
         public decimal TotalPrice { get; set; }
         public int DeliveryId { get; set; }
-        public string Status { get; set; }
+        public string OrderNumber { get; set; }
         public CustomerDataInfo CustomerDataInfo { get; set; }
 
         public IEnumerable<OrderedProductRequest> Products { get; set; }

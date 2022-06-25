@@ -11,6 +11,10 @@ namespace tropsly_api.Model.Dto
 
         public static ConfigDataResponse ToResponse(Category category)
             => new ConfigDataResponse { Id = category.CategoryId, Name = category.Name };
+        public static ConfigDataResponse ToResponse(ProductType category)
+            => new ConfigDataResponse { Id = category.ProductTypeId, Name = category.Name };
+        public static ConfigDataResponse ToResponse(MaterialType category)
+          => new ConfigDataResponse { Id = category.MaterialTypeId, Name = category.Name };
 
         public static CommentResponse ToResponse(CommentSection comment)
             => new CommentResponse { CommentId=comment.CommentId, Comment=comment.Comment,DateTime=comment.CreatedDate,ProductId=comment.ProductId};

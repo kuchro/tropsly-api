@@ -11,7 +11,7 @@ namespace tropsly_api.Model.OrderData
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public string SerialNumber { get; set; }
-        public List<string> Size { get; set; } = new List<string>();
+        public string Size { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
     }

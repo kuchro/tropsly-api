@@ -7,6 +7,6 @@
         public decimal Price { get; set; }
         public string SerialNumber { get; set; }
         public int OrderId { get; set; }
-        public List<string> Size { get; set; }
+        public string Size { get; set; }
     }
 }

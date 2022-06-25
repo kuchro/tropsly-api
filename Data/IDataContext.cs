@@ -21,6 +21,9 @@ namespace tropsly_api.Data
         public DbSet<OrderedProduct> OrderedProducts { get; set; }
         public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<MaterialType> MaterialTypes { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+
         Task<int> SaveChangeAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

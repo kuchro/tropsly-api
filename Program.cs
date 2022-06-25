@@ -16,8 +16,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 
 
 builder.Services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
-//builder.Services.AddTransient(typeof(ICrudDataContext<>), typeof(CrudDataContext<>)); ;
-//builder.Services.AddTransient(typeof(ICrudRepository<>), typeof(CrudRepository<>)); ;
+builder.Services.AddTransient(typeof(ICrudRepository<>), typeof(CrudRepository<>)); ;
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
 builder.Services.AddScoped<ICustomerPersonalDataRepository, CustomerPersonalDataRepository>();
@@ -26,8 +25,6 @@ builder.Services.AddScoped<ICustomerAddressRepository, CustomerAddressRepository
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IDeliveryOptionRepository, DeliveryOptionRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICommentSectionRepository, CommentSectionRepository>();
 builder.Services.AddScoped<IRatingDataRepository, RatingDataRepository>();

@@ -11,15 +11,11 @@ namespace tropsly_api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IBrandRepository _brandRepository;
         private readonly IUserRepository _userRepository;
 
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository, IUserRepository userRepository)
+        public ProductController(IProductRepository productRepository, IUserRepository userRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
-            _brandRepository = brandRepository;
             _userRepository = userRepository;
         }
 
@@ -39,31 +35,24 @@ namespace tropsly_api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateProduct(CreateProductRequest productRequest)
         {
-            var cat = await _categoryRepository.GetByName(productRequest.Category);
-            var brand = await _brandRepository.GetByName(productRequest.Brand);
-            //  var userData = await _userRepository.GetById(productRequest.UserId);
-
-            if (cat != null && brand != null)
-            {
                 var product = new Product
                 {
                     Title = productRequest.Title,
                     Description = productRequest.Description,
                     Price = productRequest.Price,
                     Image = productRequest.Image,
+                    SerialNumber = productRequest.SerialNumber,
                     DateCreated = DateTime.Now,
-                    Category = cat,
+                    CategoryId= productRequest.CategoryId,
                     Quantity = productRequest.Quantity,
-                    Material = productRequest.Material,
+                    MaterialTypeId= productRequest.MaterialTypeId,
+                    ProductTypeId = productRequest.ProductTypeId,
                     // CreatedByUserId = productRequest.UserId,
-                    Brand = brand,
+                    BrandId = productRequest.BrandId,
                     Size = productRequest.Size
                 };
                 await _productRepository.Add(product);
                 return Ok();
-            }
-
-            return BadRequest();
         }
 
         [HttpGet]
