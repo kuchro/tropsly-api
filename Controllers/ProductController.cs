@@ -11,14 +11,12 @@ namespace tropsly_api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IBrandRepository _brandRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository)
+        public ProductController(IProductRepository productRepository, IUserRepository userRepository)
         {
-            _productRepository=productRepository;
-            _categoryRepository=categoryRepository;
-            _brandRepository=brandRepository;
+            _productRepository = productRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet("{id}")]
@@ -34,68 +32,55 @@ namespace tropsly_api.Controllers
             return Ok(products);
         }
 
-
-        [HttpGet]
-        [Route("category/{id:int}")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory([FromRoute] int id)
-        {
-            var products = await _productRepository.GetAll();
-            return Ok(products.Where(product => product.CategoryId==id));
-        }
-
         [HttpPost]
         public async Task<ActionResult> CreateProduct(CreateProductRequest productRequest)
         {
-            var cat = await _categoryRepository.GetByName(productRequest.Category);
-            var brand = await _brandRepository.GetByName(productRequest.Brand);
-
-            if (cat != null&& brand != null)
-            {
                 var product = new Product
                 {
                     Title = productRequest.Title,
                     Description = productRequest.Description,
                     Price = productRequest.Price,
                     Image = productRequest.Image,
+                    SerialNumber = productRequest.SerialNumber,
                     DateCreated = DateTime.Now,
-                    Category = cat,
+                    CategoryId= productRequest.CategoryId,
                     Quantity = productRequest.Quantity,
-                    Material = productRequest.Material,
-                    Brand = brand,
+                    MaterialTypeId= productRequest.MaterialTypeId,
+                    ProductTypeId = productRequest.ProductTypeId,
+                    // CreatedByUserId = productRequest.UserId,
+                    BrandId = productRequest.BrandId,
                     Size = productRequest.Size
                 };
                 await _productRepository.Add(product);
                 return Ok();
-            }
-            
-            return BadRequest();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task UpdateProduct(int id, UpdateProductRequest productRequest)
+        [HttpGet]
+        [Route("category/{id:int}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory([FromRoute] int id)
         {
-            //var productData = await _productRepository.Get(id);
-
-            try
-            {
-               
-
-
-
-               await _productRepository.Update(id,productRequest);
-                    
-                }
-                catch (Exception)
-                {
-                   
-                }
+            var products = await _productRepository.GetAll();
+            return Ok(products.Where(product => product.CategoryId == id));
         }
 
         
 
+        [HttpPut("{id:int}")]
+        public async Task UpdateProduct(int id, UpdateProductRequest productRequest)
+        {
+            try
+            {
+                await _productRepository.Update(id, productRequest);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
-        {   
+        {
             await _productRepository.Delete(id);
             return Ok();
         }
