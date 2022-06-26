@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using tropsly_api.Model;
 using tropsly_api.Repository.Category;
 using tropsly_api.Repository.ProductOrderRepo;
+using Amazon.S3;
+using Amazon;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,17 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddSingleton<IAmazonS3>(p => {
+    var config = new AmazonS3Config
+    {
+        RegionEndpoint = RegionEndpoint.EUWest2,
+        ServiceURL= "http://localhost:4566",
+        ForcePathStyle = true,
+};
+    return new AmazonS3Client("test", "test", config);
+});
 builder.Services.AddCors(c =>
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
 );
